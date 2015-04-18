@@ -1,6 +1,7 @@
 package org.fasttrackit.dev.todolist.servlet;
 
 
+import org.fasttrackit.dev.todolist.ListCRUDOperations;
 import org.fasttrackit.dev.todolist.MyListOfToDoMock;
 import org.fasttrackit.dev.todolist.ToDoBean;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -44,19 +46,44 @@ public class ToDoListServlet extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("service called...");
 
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         HttpSession session = request.getSession(true);
+        session.getAttribute(UserServlet.USER);
 
         String action = request.getParameter(ACTION);
         if (action != null && action.equals(LIST_ACTION)) {
-            listAction(request, response);
+            try {
+                listAction(request, response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         } else if (action != null && action.equals(ADD_ACTION)) {
-            addAction(request, response);
+            try {
+                addAction(request, response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         } else if (action != null && action.equals(DONE_ACTION)) {
-            doneAction(request, response);
+            try {
+                doneAction(request, response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void listAction(HttpServletRequest request, HttpServletResponse response) {
+    private void listAction(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException {
 
         System.out.println("list action");
         HttpSession session = request.getSession(true);
@@ -64,7 +91,7 @@ public class ToDoListServlet extends HttpServlet {
         // call db
 
         MyListOfToDoMock myListObject = MyListOfToDoMock.getInstance();
-        myListObject.printList();
+        //myListObject.printList();
         List<ToDoBean> l = myListObject.getList();
 
         // put the list in a json
@@ -86,14 +113,14 @@ public class ToDoListServlet extends HttpServlet {
         jObjBuilder.add("tasks", jArrayBuilder);
         JsonObject jSonFinal = jObjBuilder.build();
 
-        System.out.println("json pe list: " + jSonFinal.toString());
+        //System.out.println("json pe list: " + jSonFinal.toString());
 
         returnJsonResponse(response, jSonFinal.toString());
         System.out.println("end list action");
     }
 
 
-    private void doneAction(HttpServletRequest request, HttpServletResponse response) {
+    private void doneAction(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException {
 
         System.out.println("enter pe done");
 
@@ -109,18 +136,25 @@ public class ToDoListServlet extends HttpServlet {
         List<ToDoBean> l = myListObject.getList();
         for (ListIterator<ToDoBean> iterator = l.listIterator(); iterator.hasNext(); ) {
             ToDoBean element = iterator.next();
-
+            ListCRUDOperations list =new ListCRUDOperations();
             if (element.getId() == id) {
                 System.out.println("found it, now canceling");
                 element.setDone(true);
                 iterator.set(element);
+                try {
+                    list.demoSetDone(element.getWhatToDo());
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
         System.out.println("i am done");
     }
 
-    private void addAction(HttpServletRequest request, HttpServletResponse response) {
+    private void addAction(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException {
 
         System.out.println("add action");
 

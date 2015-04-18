@@ -20,9 +20,7 @@ public class ToDoBean {
         this.id = id;
     }
 
-    public String getWhatToDo() {
-        return whatToDo;
-    }
+    public String getWhatToDo() { return whatToDo; }
 
     public void setWhatToDo(String whatToDo) {
         this.whatToDo = whatToDo;

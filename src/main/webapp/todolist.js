@@ -1,6 +1,4 @@
-/**
- * Created by condor on 03/04/15.
- */
+
 
 function listTasks(tasks) {
     var list = document.getElementById('listOfTasks').getElementsByTagName('ul')[0];
@@ -44,4 +42,14 @@ function addTask() {
     }).done(function (response) {
         location.href = "todolist.html";
     });
+}
+
+function setUser() {
+    var userText = document.getElementById('username').value;
+    $.ajax({
+        url: 'user?action=set&value='+userText
+    }).done(function (response) {
+        location.href = "todolist.html";
+    });
+
 }

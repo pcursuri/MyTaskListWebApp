@@ -2,7 +2,13 @@ package org.fasttrackit.dev.todolist;
 
 
 
+import java.sql.SQLException;
 import java.util.*;
+
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.fasttrackit.dev.todolist.ListCRUDOperations;
+
+import javax.xml.bind.SchemaOutputResolver;
 
 /**
  * Created by condor on April 04, 2015
@@ -12,12 +18,13 @@ public class MyListOfToDoMock {
 
     private static MyListOfToDoMock m;
 
-    public static MyListOfToDoMock getInstance() {
-
-        if(m==null) {
+    public static MyListOfToDoMock getInstance() throws SQLException, ClassNotFoundException {
+        System.out.println("get instance...");
+        System.out.println("m=null "+ m==null);
+       // if(m==null) {
             m=new MyListOfToDoMock();
             m.generateInitialList();
-        }
+        //}
        return m;
     }
 
@@ -25,25 +32,31 @@ public class MyListOfToDoMock {
     private List<ToDoBean> toDoList = new ArrayList<ToDoBean>();
     private int id;
 
-    private void generateInitialList() {
-        toDoList.add(new ToDoBean(1,"sa ud florile"));
-        toDoList.add(new ToDoBean(2,"sa calc camasile"));
-        toDoList.add(new ToDoBean(3,"sa imi fac programare la dentist"));
-        toDoList.add(new ToDoBean(4,"sa verific presiunea la roata de la bicicleta"));
-        toDoList.add(new ToDoBean(5,"sa imi fac tema la geogra"));
-        toDoList.add(new ToDoBean(6,"sa imi sun bunica"));
-        id=6;
+    private void generateInitialList() throws SQLException, ClassNotFoundException {
+        System.out.println("Initializing...");
+        ListCRUDOperations list = new ListCRUDOperations();
+        String[] s = new String[20];
+        s = list.demoRead();
+        System.out.println("s is null = "+s==null);
+        int i = 0;
+        while (s[i]!=null){
+            System.out.println("item to be loaded: "+s[i]);
+            toDoList.add(new ToDoBean(i, s[i]));
+            i++;
+        }
+        id=i;
     };
 
-   public void addItem(String value) {
+   public void addItem(String value) throws SQLException, ClassNotFoundException {
       id++;
-      toDoList.add(new ToDoBean(id,value));
+       toDoList.add(new ToDoBean(id,value));
+       ListCRUDOperations list = new ListCRUDOperations();
+       list.demoCreate(value);
         }
 
     public void doneItem(int index) {
         for (ListIterator<ToDoBean> iter = toDoList.listIterator(); iter.hasNext(); ) {
             ToDoBean element = iter.next();
-
             if (element.getId()==index) {
                 element.setDone(true);
                 iter.set(element);

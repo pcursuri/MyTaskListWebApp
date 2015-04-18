@@ -4,3 +4,24 @@
 #listOfTasks ul {
     list-style: none;
 }
+
+body {
+    background-color: yellow;
+    background-image: url("http://www.observatordebacau.ro/wp-content/uploads/2014/08/to-do-list.jpg");
+    background-size: cover;
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+    line-height: 125%;
+    padding: 0;
+    margin: 70px 500px ;
+}
+
+#newTask {
+    text-decoration: none;
+    color: black;
+}
+
+#toList {
+    text-decoration: none;
+    color: black;
+}
+

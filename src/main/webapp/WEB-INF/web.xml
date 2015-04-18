@@ -11,10 +11,19 @@
         <servlet-class>org.fasttrackit.dev.todolist.servlet.ToDoListServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>User</servlet-name>
+        <servlet-class>org.fasttrackit.dev.todolist.servlet.UserServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>ToDoList</servlet-name>
         <url-pattern>/items</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>User</servlet-name>
+        <url-pattern>/user</url-pattern>
     </servlet-mapping>
 </web-app>
 

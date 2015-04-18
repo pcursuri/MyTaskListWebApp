@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>My ToDo List</title>
+    <title>Add Task</title>
 
     <link rel="stylesheet" type="text/css" href="todolist.css"/>
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -11,16 +11,14 @@
 
 </head>
 <body>
-<h2>My ToDo List</h2>
 
-<div id="listOfTasks">
-    <ul>
+<label for="username">User: &nbsp;</label>
+<input type="text" id="username" style="width:230px"/>
 
-    </ul>
-</div>
-<a id="newTask" href="addtodolist.html">Add a new task</a>
-<script>
-    loadTasks();
-</script>
+</br></br>
+
+<input type="button" id="userInput" value="OK" onClick="setUser()"/>
+
+
 </body>
 </html>
